@@ -2,20 +2,28 @@
 import React from 'react';
 import { Button, Heading, Flex, Text } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
+import * as AWSAmplify from 'aws-amplify';
+const { Auth } = AWSAmplify;
 
 const FindPropertyForRent = () => {
   const navigate = useNavigate();
 
-  const handleMoreInfo = () => {
-    // For now, we simply alert the user to sign in.
-    // Later, you might navigate to a detailed view if authenticated.
-    alert('Please sign in to view more details.');
+  const handleMoreInfo = async () => {
+    try {
+      // Check if user is authenticated
+      await Auth.currentAuthenticatedUser();
+      // Navigate to property details if authenticated
+      navigate('/property-details');
+    } catch (error) {
+      // Prompt user to sign in if not authenticated
+      alert('Please sign in to view more details.');
+      navigate('/sign-in');
+    }
   };
 
   return (
     <Flex direction="column" alignItems="center" padding="2rem" gap="1rem">
       <Heading level={2}>Properties for Rent</Heading>
-      {/* Placeholder for property listings */}
       <Flex direction="column" gap="1rem" width="100%">
         <Flex
           border="1px solid #ccc"
@@ -39,7 +47,7 @@ const FindPropertyForRent = () => {
           <Text>Basic description of the property.</Text>
           <Button onClick={handleMoreInfo}>More Info</Button>
         </Flex>
-        {/* You can add more property placeholders as needed */}
+        {/* Add more property placeholders as needed */}
       </Flex>
     </Flex>
   );

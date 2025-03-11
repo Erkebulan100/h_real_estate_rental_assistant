@@ -2,18 +2,25 @@
 import React from 'react';
 import { Button, Heading, Flex, Text } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
+import * as AWSAmplify from 'aws-amplify';
+const { Auth } = AWSAmplify;
 
 const FindAppropriateTenant = () => {
   const navigate = useNavigate();
 
-  const handleMoreInfo = () => {
-    alert('Please sign in to view more details.');
+  const handleMoreInfo = async () => {
+    try {
+      await Auth.currentAuthenticatedUser();
+      navigate('/tenant-details');
+    } catch (error) {
+      alert('Please sign in to view more details.');
+      navigate('/sign-in');
+    }
   };
 
   return (
     <Flex direction="column" alignItems="center" padding="2rem" gap="1rem">
       <Heading level={2}>Appropriate Tenants</Heading>
-      {/* Placeholder for tenant listings */}
       <Flex direction="column" gap="1rem" width="100%">
         <Flex
           border="1px solid #ccc"
@@ -37,7 +44,7 @@ const FindAppropriateTenant = () => {
           <Text>Basic info about the tenant group.</Text>
           <Button onClick={handleMoreInfo}>More Info</Button>
         </Flex>
-        {/* Additional tenant placeholders */}
+        {/* Add more tenant placeholders as needed */}
       </Flex>
     </Flex>
   );

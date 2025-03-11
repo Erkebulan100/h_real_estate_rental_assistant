@@ -1,13 +1,19 @@
+// src/pages/SignIn.jsx
 import React from 'react';
-import { Heading, Flex, Text } from '@aws-amplify/ui-react';
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
 
-const SignIn = () => {
+function SignIn() {
   return (
-    <Flex direction="column" alignItems="center" padding="2rem">
-      <Heading level={2}>Sign In</Heading>
-      <Text>This page is under construction. Please sign in using the Amplify Authenticator.</Text>
-    </Flex>
+    <Authenticator>
+      {({ signOut, user }) => (
+        <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem' }}>
+          <h1>Welcome {user?.username}</h1>
+          <button onClick={signOut} style={{ marginTop: '1rem' }}>Sign Out</button>
+        </main>
+      )}
+    </Authenticator>
   );
-};
+}
 
 export default SignIn;
